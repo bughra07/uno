@@ -1,0 +1,190 @@
+// Bugra turkce karakter kullanma!
+// Classlari olabildigince dosyalandirmaya calis.
+// Ogrenci icin class olustur ve Properties ve Methodlar olustur.
+
+namespace Ornek
+{
+  class Program
+  {
+
+    static void Main(string[] args)
+    {
+
+      Dosyayiyoksaoluştur();
+
+      Console.WriteLine("ÖĞRENCİ OTOMASYON SİSTEMİNE HOŞGELDİNİZ...");
+      int secim;
+
+
+      do
+      {
+        Console.WriteLine("LÜTFEN YAPMAK İSTEDİĞİNİZ İŞLEMİ SEÇİNİZ....");
+        Console.WriteLine("1 KAYIT EKLE");
+        Console.WriteLine("2 KAYIT GÜNCELLE ");
+        Console.WriteLine("3 kayıtları göster");
+        Console.WriteLine("4-) ÇIKIŞ:");
+        secim = int.Parse(Console.ReadLine());
+
+        switch (secim)
+        {
+          case 1:
+
+            Kayıtekle();
+            break;
+
+          case 2:
+            Kayıtgüncelle();
+            break;
+
+          case 3:
+            Kayıtlarıgöster();
+            break;
+
+
+
+          case 4:
+            Console.WriteLine("PROGRAM SONLANDI");
+            break;
+
+          default:
+            Console.WriteLine("LÜTFEN1-4 ARASINDA BİR DEĞER GİRİN");
+            break;
+
+
+
+
+
+        }
+
+      }
+
+      while (secim != 4);
+
+      static void Dosyayiyoksaoluştur()
+      {
+        if (!File.Exists(Environment.CurrentDirectory + "\\ogrenciBilgileri.txt"))
+        {
+          File.Create(Environment.CurrentDirectory + "\\ogrenciBilgileri.txt");
+        }
+      }
+      static void Kayıtekle()
+      {
+        int id;
+        string isim;
+        int yaş;
+        double not;
+        Console.WriteLine("lütfen öğrenci idsini giriniz:");
+        id = int.Parse(Console.ReadLine());
+        Console.WriteLine("lütfen öğrenci ismini giriniz:");
+        isim = Console.ReadLine();
+        Console.WriteLine("lütfen öğrenci yaşını giriniz:");
+        yaş = int.Parse(Console.ReadLine());
+        Console.WriteLine("lütfen öğrenci notunu giriniz:");
+        not = int.Parse(Console.ReadLine());
+
+        File.AppendAllText(Environment.CurrentDirectory + "\\ogrenciBilgileri.txt", +id + " " + isim + " " + yaş + " " + not + Environment.NewLine);
+
+      }
+      static void Kayıtgüncelle()
+      {
+        string[] ogrenciler = File.ReadAllLines(Environment.CurrentDirectory + "\\ogrenciBilgileri.txt");
+        int degistirilecekid;
+        Console.WriteLine("LÜTFEN GÜNCELLEMEK İSTEDİĞİNİZ İDYİ GİRİN.");
+        degistirilecekid = int.Parse(Console.ReadLine());
+        degistirilecekid--;
+        int id;
+        string isim;
+        int yaş;
+        double not;
+
+        string[] parçalıveri = ogrenciler[degistirilecekid].Split(' ');
+        id = int.Parse(parçalıveri[0]);
+        isim = parçalıveri[1];
+        yaş = int.Parse(parçalıveri[2]);
+        not = double.Parse(parçalıveri[3]);
+        Console.WriteLine(parçalıveri[3]);
+
+
+
+        int seçim;
+
+
+
+
+        Console.WriteLine("GÜNCELLEMEK İSTEDİĞİNİZ VERİYİ SEÇİNİZ");
+        Console.WriteLine("1-)İSİM DEĞİŞTİR");
+        Console.WriteLine("2-)YAŞ DEĞİŞTİR");
+        Console.WriteLine("3-)NOT DEĞİŞTİR");
+
+        seçim = int.Parse(Console.ReadLine());
+        do
+        {
+
+          switch (seçim)
+          {
+
+            case 1:
+              Console.WriteLine("YENİ İSİM DEĞERİNİ GİRİNİZ..");
+              isim = Console.ReadLine();
+              break;
+
+            case 2:
+              Console.WriteLine("YENİ YAŞ DEĞERİNİ GİRİNİZ..");
+              yaş = int.Parse(Console.ReadLine());
+              break;
+            case 3:
+              Console.WriteLine("YENİ NOT DEĞERİNİ GİRİNİZ..");
+              not = int.Parse(Console.ReadLine());
+              break;
+            default:
+              Console.WriteLine("LÜTFEN 1-3 ARASINDAN SEÇİM YAPIN..");
+              break;
+
+
+          }
+
+
+
+        }
+
+        while (seçim > 3 || seçim < 1);
+
+        string yenieklenecekveri = id.ToString() + " " + isim + " " + yaş.ToString() + " " + not.ToString();
+        ogrenciler[id - 1] = yenieklenecekveri;
+        File.WriteAllLines(Environment.CurrentDirectory + "\\ogrenciBilgileri.txt", ogrenciler);
+
+
+      }
+      static void Kayıtlarıgöster()
+      {
+        string[] ogrenciler = File.ReadAllLines(Environment.CurrentDirectory + "\\ogrenciBilgileri.txt");
+
+
+        int[] idler = new int[ogrenciler.Length];
+        string[] isimler = new string[ogrenciler.Length];
+        int[] yaşlar = new int[ogrenciler.Length];
+        double[] notlar = new double[ogrenciler.Length];
+        string[] parçalıveri;
+
+        int i = 0;
+        foreach (var ogrenci in ogrenciler)
+        {
+          parçalıveri = ogrenci.Split(' ');
+          idler[i] = int.Parse(parçalıveri[0]);
+          isimler[i] = parçalıveri[1];
+          yaşlar[i] = int.Parse(parçalıveri[2]);
+          notlar[i] = double.Parse(parçalıveri[3]);
+
+          i++;
+
+        }
+
+        for (i = 0; i < idler.Length; i++)
+        {
+          Console.WriteLine(isimler[i] + " " + yaşlar[i] + " " + notlar[i]);
+        }
+
+      }
+    }
+  }
+}
